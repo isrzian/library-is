@@ -11,17 +11,26 @@ export const Navbar: FC = () => {
     const {logout} = useActions()
     return (
         <Layout.Header>
-            <Row justify="end">
+            <Row justify="start">
+
                 {
                     isAuth
                         ?
                         <>
+                            <div style={{color: 'white'}}>BibliKoD(T)</div>
+                            <div style={{color: 'white'}}>&nbsp;&nbsp;*&nbsp;&nbsp;</div>
                             <div style={{color: 'white'}}>Привет, {user.username}!</div>
                             <Menu theme="dark" mode="horizontal" selectable={false}>
-                                <Menu.Item onClick={logout} key="1">Личный кабинет</Menu.Item>
+                                <Menu.Item onClick={() => history.push(RouteNames.MAP)}>Карта</Menu.Item>
                             </Menu>
                             <Menu theme="dark" mode="horizontal" selectable={false}>
-                                <Menu.Item onClick={logout} key="1">Logout</Menu.Item>
+                                <Menu.Item onClick={() => history.push(RouteNames.CABINET)}>Личный кабинет</Menu.Item>
+                            </Menu>
+                            <Menu theme="dark" mode="horizontal" selectable={false}>
+                                <Menu.Item onClick={() => history.push(RouteNames.BOOK)}>Книги</Menu.Item>
+                            </Menu>
+                            <Menu theme="dark" mode="horizontal" selectable={false}>
+                                <Menu.Item onClick={logout} key="1">Выход</Menu.Item>
                             </Menu>
                         </>
                         :

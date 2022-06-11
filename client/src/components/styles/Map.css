@@ -1,0 +1,11 @@
+input {
+    width: 100%;
+}
+
+.input__wrapper_show-dropdown .ymaps-2-1-79-search__suggest {
+    display: block !important;
+}
+
+.input__wrapper_hide-dropdown .ymaps-2-1-79-search__suggest {
+    display: none !important;
+}
