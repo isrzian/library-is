@@ -1,21 +1,40 @@
-import React, {FC, createRef, useState} from 'react';
+import React, {FC, createRef, useState, useEffect} from 'react';
 import { YMaps, Map, Placemark } from "react-yandex-maps";
 import "../components/styles/Map.css";
 import {Layout} from 'antd';
 
-const mapState = {
-    center: [55.76, 37.64],
-    zoom: 13,
-    controls: []
-};
+interface MapState {
+    center: Array<number>,
+    zoom: number,
+    controls: Array<any>
+}
 
-export const MapComponent: FC = () => {
+interface MapProps {
+    width?: string,
+    height?: string,
+    mapCoords?: MapState
+}
+
+export const MapComponent: FC<MapProps> = ({width, height, mapCoords}) => {
     const inputRef: any = createRef();
 
-    const [addressCoord, setAddressCoord] = useState();
+    const [addressCoord, setAddressCoord] = useState([] as number[]);
     const [inputValue, setInputValue] = useState("");
     const [savedYmaps, setSavedYmaps] = useState();
     const [isHideYandexInput, setIsHideYandexInput] = useState(false);
+
+    useEffect(() => {
+        if (mapCoords) {
+            setAddressCoord(mapCoords.center)
+        }
+    }, [])
+
+    const mapState: MapState = mapCoords ? mapCoords : {
+        center: [55.76, 37.64],
+        zoom: 13,
+        controls: []
+    };
+
 
     const onClickAddress = (e: any, ymaps: any) => {
         const name = e.get("item").value;
@@ -74,8 +93,8 @@ export const MapComponent: FC = () => {
                         addressCoord ? { ...mapState, center: addressCoord } : mapState
                     }
                     onLoad={onYmapsLoad}
-                    width="100%"
-                    height="550px"
+                    width={width ? width : "100%"}
+                    height={height ? height : "550px"}
                     onClick={onClickToMap}
                 >
                     {addressCoord && <Placemark geometry={addressCoord} />}

@@ -1,10 +1,21 @@
-import {AddBookAction, AddBookToFavoriteAction, BookActionEnum, SetBooksAction} from "./types";
+import {
+    AddBookAction,
+    AddBookToFavoriteAction,
+    BookActionEnum,
+    FilterCategoryBooksAction,
+    FilterGenreBooksAction,
+    ResetFiltersAction,
+    SetBooksAction
+} from "./types";
 import {IBook} from "../../../models/IBook";
 import {AppDispatch} from "../../index";
 import BookService from '../../../api/BookService';
 import UserService from '../../../api/UserService';
 
 export const BookActionCreators = {
+    filteredBooksByCategory: (payload: string): FilterCategoryBooksAction => ({type: BookActionEnum.FILTER_CATEGORY_BOOKS, payload}),
+    filteredBooksByGenre: (payload: string): FilterGenreBooksAction => ({type: BookActionEnum.FILTER_GENRE_BOOKS, payload}),
+    resetFilters: (): ResetFiltersAction => ({type: BookActionEnum.RESET_FILTERS}),
     setBooks: (payload: IBook[]): SetBooksAction => ({type: BookActionEnum.SET_BOOKS, payload}),
     addBook: (payload: IBook): AddBookAction => ({type: BookActionEnum.CREATE_BOOK, payload}),
     addBookToFavorite: (payload: IBook): AddBookToFavoriteAction => ({type: BookActionEnum.ADD_BOOK_TO_FAVORITE, payload}),
@@ -23,7 +34,6 @@ export const BookActionCreators = {
             const favoritesUserBooks = responseUserBook.data.user.favorites.map((book: { slug: string; }) => book.slug);
             const books = responseBooks.data.map(book =>
                 (favoritesUserBooks.includes(book.slug) ? {...book, favorite: true} : {...book, favorite: false}))
-            console.log('books')
             dispatch(BookActionCreators.setBooks(books))
         } catch (e) {
             console.log(e)
