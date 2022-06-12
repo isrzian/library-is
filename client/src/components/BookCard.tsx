@@ -9,7 +9,7 @@ interface BookCardProps {
     favorite: boolean,
     description: string,
     title: string,
-    onClick: () => void
+    onClick?: () => void
 }
 
 export const BookCard: FC<BookCardProps> = ({src, favorite, description, title, onClick}) => (

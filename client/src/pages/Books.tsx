@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react'
 import {Layout, Row, Col, Modal, Typography, Select, Button} from "antd";
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {BookCard} from '../components/BookCard';
@@ -13,7 +13,13 @@ export const Books: FC = () => {
     const [currentBook, setCurrentBook] = useState({} as IBook);
     const [categories, setCategories] = useState([] as string[])
     const [genres, setGenres] = useState([] as string[])
-    const {fetchBooks, filteredBooksByCategory, filteredBooksByGenre, resetFilters} = useActions()
+    const {
+        fetchBooks,
+        filteredBooksByCategory,
+        filteredBooksByGenre,
+        resetFilters,
+        favoriteBook,
+    } = useActions()
     const {books, filteredBooks} = useTypedSelector(state => state.book)
     const {Title, Text} = Typography
     const {Option} = Select
@@ -94,6 +100,14 @@ export const Books: FC = () => {
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
+                <Button
+                    style={{marginBottom: 20}}
+                    type="primary"
+                    icon={currentBook.favorite ? <HeartFilled /> : <HeartOutlined />}
+                    onClick={() => favoriteBook(currentBook)}
+                >
+                    Добавить в избранное
+                </Button>
                 <Title level={5}>Описание: {currentBook?.description}</Title>
                 <Title level={5}>Год: {currentBook?.year}</Title>
                 <Title level={5}>Автор: {currentBook?.author}</Title>
