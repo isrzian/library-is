@@ -26,4 +26,12 @@ export class CreateBookDto {
     @IsNotEmpty()
     @IsString()
     readonly author: string;
+
+    @IsNotEmpty()
+    @IsString()
+    readonly link: string;
+
+    @IsNotEmpty()
+    @IsString()
+    readonly image: string;
 }

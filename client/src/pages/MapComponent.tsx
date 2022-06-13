@@ -15,9 +15,14 @@ interface MapProps {
     mapCoords?: MapState
 }
 
+const mapState: MapState = {
+    center: [55.76, 37.64],
+    zoom: 13,
+    controls: []
+};
+
 export const MapComponent: FC<MapProps> = ({width, height, mapCoords}) => {
     const inputRef: any = createRef();
-
     const [addressCoord, setAddressCoord] = useState([] as number[]);
     const [inputValue, setInputValue] = useState("");
     const [savedYmaps, setSavedYmaps] = useState();
@@ -27,14 +32,7 @@ export const MapComponent: FC<MapProps> = ({width, height, mapCoords}) => {
         if (mapCoords) {
             setAddressCoord(mapCoords.center)
         }
-    }, [])
-
-    const mapState: MapState = mapCoords ? mapCoords : {
-        center: [55.76, 37.64],
-        zoom: 13,
-        controls: []
-    };
-
+    }, [mapCoords])
 
     const onClickAddress = (e: any, ymaps: any) => {
         const name = e.get("item").value;
@@ -90,6 +88,10 @@ export const MapComponent: FC<MapProps> = ({width, height, mapCoords}) => {
             >
                 <Map
                     state={
+                        mapCoords
+                        ?
+                        addressCoord ? { ...mapCoords, center: addressCoord } : mapCoords
+                        :
                         addressCoord ? { ...mapState, center: addressCoord } : mapState
                     }
                     onLoad={onYmapsLoad}

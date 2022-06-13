@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react'
-import {Layout, Row, Col, Modal, Typography, Select, Button} from "antd";
-import { CloseOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
+import {Layout, Row, Col, Modal, Typography, Select, Button, Input} from "antd";
+import { CloseOutlined, HeartOutlined, HeartFilled, SearchOutlined } from '@ant-design/icons';
 import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {BookCard} from '../components/BookCard';
@@ -11,8 +11,8 @@ import {MapComponent} from './MapComponent';
 export const Books: FC = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentBook, setCurrentBook] = useState({} as IBook);
-    const [categories, setCategories] = useState([] as string[])
-    const [genres, setGenres] = useState([] as string[])
+    const [searchText, setSearchText] = useState('');
+    const [currentCoords, setCurrentCoords] = useState([55.76, 37.64] as number[])
     const {
         fetchBooks,
         filteredBooksByCategory,
@@ -20,14 +20,11 @@ export const Books: FC = () => {
         resetFilters,
         favoriteBook,
     } = useActions()
-    const {books, filteredBooks} = useTypedSelector(state => state.book)
+    const {filteredBooks, categories, genres} = useTypedSelector(state => state.book)
     const {Title, Text} = Typography
     const {Option} = Select
-
     useEffect(() => {
         fetchBooks();
-        setCategories(Array.from(new Set(books?.map(book => book.category))));
-        setGenres(Array.from(new Set(books?.map(book => book.genre))));
     }, [])
 
     const showModal = () => {
@@ -42,6 +39,8 @@ export const Books: FC = () => {
         setIsModalVisible(false);
     };
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <Layout>
             <Row style={{marginTop: 20}}>
@@ -66,28 +65,50 @@ export const Books: FC = () => {
                     </Select>
                 </Col>
                 <Col>
+                    <Input
+                        placeholder="Поиск по названию..."
+                        prefix={<SearchOutlined />}
+                        value={searchText}
+                        onChange={event => setSearchText(event.target.value)}
+                        style={{marginLeft: 10}}
+                    />
+                </Col>
+                <Col>
                     <Button
                         style={{marginLeft: 20}}
                         type="primary"
                         icon={<CloseOutlined />}
-                        onClick={resetFilters}
+                        onClick={() => {
+                            resetFilters()
+                            setSearchText('')
+                        }}
                     >
                         Сбросить
                     </Button>
                 </Col>
             </Row>
             <Row justify={'center'}>
-            {filteredBooks.map(
+            {filteredBooks.filter(book => {
+                if (searchText === '') {
+                    return true;
+                }
+                if (book.title.includes(searchText)) {
+                    return true;
+                }
+            }).map(
                 book =>
                     <Col>
                         <BookCard
                             description={book.description}
                             title={book.title}
                             favorite={book.favorite}
-                            src={logo}
+                            src={book.image.includes('/') ? book.image : logo}
                             key={book.slug}
                             onClick={() => {
                                 setCurrentBook(book)
+                                setCurrentCoords(
+                                    book?.whereBuy?.split(';')[0].split(':')[1].split('-').map(coord => Number(coord))
+                                )
                                 showModal()
                             }}
                     />
@@ -104,7 +125,10 @@ export const Books: FC = () => {
                     style={{marginBottom: 20}}
                     type="primary"
                     icon={currentBook.favorite ? <HeartFilled /> : <HeartOutlined />}
-                    onClick={() => favoriteBook(currentBook)}
+                    onClick={() => {
+                        handleOk();
+                        favoriteBook(currentBook);
+                    }}
                 >
                     Добавить в избранное
                 </Button>
@@ -114,11 +138,15 @@ export const Books: FC = () => {
                 <Title level={5}>Жанр: {currentBook?.genre}</Title>
                 <Title level={5}>Категория: {currentBook?.category}</Title>
                 <Title level={5}>Где купить:</Title>
+                {
+                    currentBook?.whereBuy?.split(';').map(place => ({name: place.split(':')[0], coords: place.split(':')[1].split('-').map(coord => Number(coord))}))
+                        .map(place => <p style={{cursor: 'pointer'}} onClick={() => setCurrentCoords(place.coords)}>{place.name}</p>)
+                }
                 <MapComponent
                     width={'470px'}
                     height={'200px'}
                     mapCoords={{
-                        center: currentBook?.whereBuy?.split(', ').map(coord => Number(coord)) ? currentBook?.whereBuy?.split(', ').map(coord => Number(coord)) : [13, 13],
+                        center: currentCoords,
                         zoom: 13,
                         controls: []
                     }}

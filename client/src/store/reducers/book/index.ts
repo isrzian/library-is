@@ -2,7 +2,9 @@ import {BookAction, BookActionEnum, BookState} from "./types";
 
 const initialState: BookState = {
     books: [],
-    filteredBooks: []
+    filteredBooks: [],
+    categories: [],
+    genres: []
 }
 
 export default function BookReducer(state = initialState, action: BookAction): BookState {
@@ -21,6 +23,10 @@ export default function BookReducer(state = initialState, action: BookAction): B
             return {...state, filteredBooks: state.books.filter(book => book.genre === action.payload)}
         case BookActionEnum.RESET_FILTERS:
             return {...state, filteredBooks: state.books}
+        case BookActionEnum.SET_CATEGORIES:
+            return {...state, categories: action.payload}
+        case BookActionEnum.SET_GENRES:
+            return {...state, genres: action.payload}
         default:
             return state
     }

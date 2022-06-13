@@ -2,7 +2,9 @@ import {IBook} from "../../../models/IBook";
 
 export interface BookState {
     books: IBook[],
-    filteredBooks: IBook[]
+    filteredBooks: IBook[],
+    categories: string[],
+    genres: string[]
 }
 
 export enum BookActionEnum {
@@ -11,7 +13,19 @@ export enum BookActionEnum {
     ADD_BOOK_TO_FAVORITE = 'ADD_BOOK_TO_FAVORITE',
     FILTER_CATEGORY_BOOKS = 'FILTER_CATEGORY_BOOKS',
     FILTER_GENRE_BOOKS = 'FILTER_GENRE_BOOKS',
-    RESET_FILTERS = 'RESET_FILTERS'
+    RESET_FILTERS = 'RESET_FILTERS',
+    SET_CATEGORIES = 'SET_CATEGORIES',
+    SET_GENRES = 'SET_GENRES'
+}
+
+export interface SetCategoriesAction {
+    type: BookActionEnum.SET_CATEGORIES,
+    payload: string[]
+}
+
+export interface SetGenresAction {
+    type: BookActionEnum.SET_GENRES,
+    payload: string[]
 }
 
 export interface ResetFiltersAction {
@@ -49,3 +63,5 @@ export type BookAction = SetBooksAction
     | FilterCategoryBooksAction
     | FilterGenreBooksAction
     | ResetFiltersAction
+    | SetCategoriesAction
+    | SetGenresAction

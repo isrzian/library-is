@@ -11,8 +11,7 @@ export const Navbar: FC = () => {
     const {logout} = useActions()
     return (
         <Layout.Header>
-            <Row justify="start">
-
+            <Row justify="end">
                 {
                     isAuth
                         ?

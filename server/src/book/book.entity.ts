@@ -28,4 +28,10 @@ export class BookEntity {
 
     @Column()
     whereBuy: string;
+
+    @Column()
+    link: string;
+
+    @Column()
+    image: string;
 }

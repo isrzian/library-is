@@ -5,7 +5,9 @@ import {
     FilterCategoryBooksAction,
     FilterGenreBooksAction,
     ResetFiltersAction,
-    SetBooksAction
+    SetBooksAction,
+    SetCategoriesAction,
+    SetGenresAction
 } from "./types";
 import {IBook} from "../../../models/IBook";
 import {AppDispatch} from "../../index";
@@ -13,6 +15,8 @@ import BookService from '../../../api/BookService';
 import UserService from '../../../api/UserService';
 
 export const BookActionCreators = {
+    setCategories: (payload: string[]): SetCategoriesAction => ({type: BookActionEnum.SET_CATEGORIES, payload}),
+    setGenres: (payload: string[]): SetGenresAction => ({type: BookActionEnum.SET_GENRES, payload}),
     filteredBooksByCategory: (payload: string): FilterCategoryBooksAction => ({type: BookActionEnum.FILTER_CATEGORY_BOOKS, payload}),
     filteredBooksByGenre: (payload: string): FilterGenreBooksAction => ({type: BookActionEnum.FILTER_GENRE_BOOKS, payload}),
     resetFilters: (): ResetFiltersAction => ({type: BookActionEnum.RESET_FILTERS}),
@@ -35,6 +39,10 @@ export const BookActionCreators = {
             const books = responseBooks.data.map(book =>
                 (favoritesUserBooks.includes(book.slug) ? {...book, favorite: true} : {...book, favorite: false}))
             dispatch(BookActionCreators.setBooks(books))
+            const uniqueCategories = Array.from(new Set(responseBooks.data.map(book => book.category)))
+            const uniqueGenres = Array.from(new Set(responseBooks.data.map(book => book.genre)))
+            dispatch(BookActionCreators.setCategories(uniqueCategories))
+            dispatch(BookActionCreators.setGenres(uniqueGenres))
         } catch (e) {
             console.log(e)
         }

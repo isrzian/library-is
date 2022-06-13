@@ -11,6 +11,11 @@ export default class BookService {
     }
 
     static async addBookToFavorite(slug: string) {
-        return await axios.post(`http://localhost:8000/books/book/${slug}/favorite`, null);
+        const token = localStorage.getItem('Token')
+        return await axios.post(`http://localhost:8000/books/book/${slug}/favorite`, null, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        });
     }
 }

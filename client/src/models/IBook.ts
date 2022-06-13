@@ -7,5 +7,7 @@ export interface IBook {
     category: string,
     whereBuy: string,
     slug: string,
-    favorite: boolean
+    favorite: boolean,
+    link: string,
+    image: string
 }
