@@ -137,6 +137,7 @@ export const Books: FC = () => {
                 <Title level={5}>Автор: {currentBook?.author}</Title>
                 <Title level={5}>Жанр: {currentBook?.genre}</Title>
                 <Title level={5}>Категория: {currentBook?.category}</Title>
+                <Title level={5}><a target={'_blank'} href={currentBook?.link}>Ссылка на книгу</a></Title>
                 <Title level={5}>Где купить:</Title>
                 {
                     currentBook?.whereBuy?.split(';').map(place => ({name: place.split(':')[0], coords: place.split(':')[1].split('-').map(coord => Number(coord))}))
