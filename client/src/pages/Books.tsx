@@ -1,5 +1,4 @@
 import React, {FC, useEffect, useState} from 'react'
-import * as path from 'path';
 import {Layout, Row, Col, Modal, Typography, Select, Button, Input} from "antd";
 import { CloseOutlined, HeartOutlined, HeartFilled, SearchOutlined } from '@ant-design/icons';
 import {useActions} from "../hooks/useActions";
@@ -103,7 +102,7 @@ export const Books: FC = () => {
                             description={book.description}
                             title={book.title}
                             favorite={book.favorite}
-                            src={book.image.includes('.') ? path.resolve('../components/images/', `${book.image}`) : logo}
+                            src={book.image.includes('.') ? book.image : logo}
                             key={book.slug}
                             onClick={() => {
                                 setCurrentBook(book)

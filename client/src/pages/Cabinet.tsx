@@ -1,5 +1,4 @@
 import React, {FC, useEffect, useState} from 'react';
-import * as path from 'path';
 import {Layout, Row, Col, Image, Typography, Tabs} from 'antd';
 import logo from '../components/images/1.png'
 import logoBook from '../components/images/2.jpg'
@@ -52,7 +51,7 @@ export const Cabinet: FC = () => {
                                         description={book.description}
                                         title={book.title}
                                         favorite={book.favorite}
-                                        src={book.image.includes('.') ? path.resolve('../components/images/', `${book.image}`) : logoBook}
+                                        src={book.image.includes('.') ? book.image : logoBook}
                                         key={book.slug}
                                     />
                                 ) : 'Отсутствуют'
