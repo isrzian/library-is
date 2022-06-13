@@ -4,7 +4,6 @@ import { CloseOutlined, HeartOutlined, HeartFilled, SearchOutlined } from '@ant-
 import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {BookCard} from '../components/BookCard';
-import logo from '../components/images/2.jpg'
 import {IBook} from '../models/IBook';
 import {MapComponent} from './MapComponent';
 
@@ -102,7 +101,7 @@ export const Books: FC = () => {
                             description={book.description}
                             title={book.title}
                             favorite={book.favorite}
-                            src={book.image.includes('.') ? book.image : logo}
+                            src={book.image.includes('.') ? `/images/${book.image}` : '/images/2.jpg'}
                             key={book.slug}
                             onClick={() => {
                                 setCurrentBook(book)

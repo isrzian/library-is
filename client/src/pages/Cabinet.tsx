@@ -1,7 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Layout, Row, Col, Image, Typography, Tabs} from 'antd';
-import logo from '../components/images/1.png'
-import logoBook from '../components/images/2.jpg'
 import UserService from '../api/UserService';
 import {IUser} from '../models/IUser';
 import {useTypedSelector} from '../hooks/useTypedSelector';
@@ -32,7 +30,7 @@ export const Cabinet: FC = () => {
                             <Col span={3} offset={3}>
                                 <Image
                                     width={200}
-                                    src={logo}
+                                    src={'/images/1.png'}
                                 />
                             </Col>
                             <Col span={9}>
@@ -51,7 +49,7 @@ export const Cabinet: FC = () => {
                                         description={book.description}
                                         title={book.title}
                                         favorite={book.favorite}
-                                        src={book.image.includes('.') ? book.image : logoBook}
+                                        src={book.image.includes('.') ? `/images/${book.image}` : '/images/2.jpg'}
                                         key={book.slug}
                                     />
                                 ) : 'Отсутствуют'
