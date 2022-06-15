@@ -15,7 +15,7 @@ export const Cabinet: FC = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentBook, setCurrentBook] = useState({} as IBook);
     const [user, setUser] = useState({} as PromiseUser)
-    const {favoriteBook} = useActions()
+    const {favoriteBook, unfavoriteBook} = useActions()
     const [currentCoords, setCurrentCoords] = useState([55.76, 37.64] as number[])
     const {books} = useTypedSelector(state => state.book)
     const {Title} = Typography
@@ -92,11 +92,14 @@ export const Cabinet: FC = () => {
                                 type="primary"
                                 icon={currentBook.favorite ? <HeartFilled /> : <HeartOutlined />}
                                 onClick={() => {
+                                    if (currentBook.favorite) {
+                                        unfavoriteBook(currentBook);
+                                    } else
+                                        favoriteBook(currentBook);
                                     handleOk();
-                                    favoriteBook(currentBook);
                                 }}
                             >
-                                Добавить в избранное
+                                {currentBook.favorite ? 'Убрать из избранного' : 'Добавить в избранное'}
                             </Button>
                             <Title level={5}>Описание: {currentBook?.description}</Title>
                             <Title level={5}>Год: {currentBook?.year}</Title>

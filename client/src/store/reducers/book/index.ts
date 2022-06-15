@@ -17,6 +17,9 @@ export default function BookReducer(state = initialState, action: BookAction): B
         case BookActionEnum.ADD_BOOK_TO_FAVORITE:
             const newBooks = state.books.map(book => (book.slug === action.payload.slug ? {...book, favorite: true} : book))
             return {...state, books: newBooks, filteredBooks: newBooks}
+        case BookActionEnum.DELETE_BOOK_FROM_FAVORITES:
+            const newBooksList = state.books.map(book => (book.slug === action.payload.slug ? {...book, favorite: false} : book))
+            return {...state, books: newBooksList, filteredBooks: newBooksList}
         case BookActionEnum.FILTER_CATEGORY_BOOKS:
             return {...state, filteredBooks: state.books.filter(book => book.category === action.payload)}
         case BookActionEnum.FILTER_GENRE_BOOKS:

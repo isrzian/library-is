@@ -2,6 +2,7 @@ import {
     AddBookAction,
     AddBookToFavoriteAction,
     BookActionEnum,
+    DeleteBookFromFavoritesAction,
     FilterCategoryBooksAction,
     FilterGenreBooksAction,
     ResetFiltersAction,
@@ -23,6 +24,7 @@ export const BookActionCreators = {
     setBooks: (payload: IBook[]): SetBooksAction => ({type: BookActionEnum.SET_BOOKS, payload}),
     addBook: (payload: IBook): AddBookAction => ({type: BookActionEnum.CREATE_BOOK, payload}),
     addBookToFavorite: (payload: IBook): AddBookToFavoriteAction => ({type: BookActionEnum.ADD_BOOK_TO_FAVORITE, payload}),
+    deleteBookFromFavorites: (payload: IBook): DeleteBookFromFavoritesAction => ({type: BookActionEnum.DELETE_BOOK_FROM_FAVORITES, payload}),
     createBook: (book: IBook) => async (dispatch: AppDispatch) => {
         try {
             const response = await BookService.createBook(book);
@@ -47,12 +49,24 @@ export const BookActionCreators = {
             console.log(e)
         }
     },
+
     favoriteBook: (book: IBook) => async (dispatch: AppDispatch) => {
         try {
             const response = await BookService.addBookToFavorite(book.slug)
             const favoriteBook = response.data;
             favoriteBook.favorite = true;
             dispatch(BookActionCreators.addBookToFavorite(favoriteBook))
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
+    unfavoriteBook: (book: IBook) => async (dispatch: AppDispatch) => {
+        try {
+            const response = await BookService.deleteBookFromFavorites(book.slug);
+            const unfavoriteBook = response.data;
+            unfavoriteBook.favorite = false;
+            dispatch(BookActionCreators.deleteBookFromFavorites(unfavoriteBook));
         } catch (e) {
             console.log(e)
         }

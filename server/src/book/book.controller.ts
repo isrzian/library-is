@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, Query, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, UseGuards} from '@nestjs/common';
 import {BookService} from './book.service';
 import {BookEntity} from './book.entity';
 import {CreateBookDto} from './dto/create-book.dto';
@@ -33,5 +33,14 @@ export class BookController {
         @Param('slug') slug: string
     ): Promise<BookEntity> {
         return await this.bookService.addBookToFavorites(currentUserId, slug);
+    }
+
+    @Post('book/:slug/unfavorite')
+    @UseGuards(AuthGuard)
+    async deleteBookToFavorites(
+        @User('id') currentUserId: number,
+        @Param('slug') slug: string
+    ): Promise<BookEntity> {
+        return await this.bookService.deleteBookToFavorite(currentUserId, slug);
     }
 }

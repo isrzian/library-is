@@ -18,6 +18,7 @@ export const Books: FC = () => {
         filteredBooksByGenre,
         resetFilters,
         favoriteBook,
+        unfavoriteBook,
     } = useActions()
     const {filteredBooks, categories, genres} = useTypedSelector(state => state.book)
     const {Title, Text} = Typography
@@ -125,11 +126,14 @@ export const Books: FC = () => {
                     type="primary"
                     icon={currentBook.favorite ? <HeartFilled /> : <HeartOutlined />}
                     onClick={() => {
+                        if (currentBook.favorite) {
+                            unfavoriteBook(currentBook);
+                        } else
+                            favoriteBook(currentBook);
                         handleOk();
-                        favoriteBook(currentBook);
                     }}
                 >
-                    Добавить в избранное
+                    {currentBook.favorite ? 'Убрать из избранного' : 'Добавить в избранное'}
                 </Button>
                 <Title level={5}>Описание: {currentBook?.description}</Title>
                 <Title level={5}>Год: {currentBook?.year}</Title>

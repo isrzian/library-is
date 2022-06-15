@@ -18,4 +18,13 @@ export default class BookService {
             }
         });
     }
+
+    static async deleteBookFromFavorites(slug: string) {
+        const token = localStorage.getItem('Token')
+        return await axios.post(`http://localhost:8000/books/book/${slug}/unfavorite`, null, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        });
+    }
 }

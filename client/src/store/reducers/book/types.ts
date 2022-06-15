@@ -11,6 +11,7 @@ export enum BookActionEnum {
     SET_BOOKS = 'SET_BOOKS',
     CREATE_BOOK = 'CREATE_BOOK',
     ADD_BOOK_TO_FAVORITE = 'ADD_BOOK_TO_FAVORITE',
+    DELETE_BOOK_FROM_FAVORITES = 'DELETE_BOOK_FROM_FAVORITES',
     FILTER_CATEGORY_BOOKS = 'FILTER_CATEGORY_BOOKS',
     FILTER_GENRE_BOOKS = 'FILTER_GENRE_BOOKS',
     RESET_FILTERS = 'RESET_FILTERS',
@@ -57,9 +58,15 @@ export interface AddBookToFavoriteAction {
     payload: IBook
 }
 
+export interface DeleteBookFromFavoritesAction {
+    type: BookActionEnum.DELETE_BOOK_FROM_FAVORITES,
+    payload: IBook
+}
+
 export type BookAction = SetBooksAction
     | AddBookAction
     | AddBookToFavoriteAction
+    | DeleteBookFromFavoritesAction
     | FilterCategoryBooksAction
     | FilterGenreBooksAction
     | ResetFiltersAction

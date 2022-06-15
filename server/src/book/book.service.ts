@@ -63,6 +63,25 @@ export class BookService {
         return book;
     }
 
+    async deleteBookToFavorite(
+        currentUserId: number,
+        slug: string
+    ) {
+        const book = await this.getBook(slug);
+        const user = await this.userRepository.findOne(currentUserId, {
+            relations: ['favorites'],
+        })
+
+        const isFavoriteId = user.favorites.findIndex(bookInFavorites => bookInFavorites.id === book.id);
+
+        if (isFavoriteId + 1) {
+            user.favorites.splice(isFavoriteId, 1);
+            await this.userRepository.save(user);
+        }
+
+        return book;
+    }
+
     private getSlug(title: string): string {
         return (
             slugify(title, { lower: true }) +
